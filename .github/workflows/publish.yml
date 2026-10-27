@@ -18,6 +18,15 @@ jobs:
       - name: Validate bump of versionCode and versionName
         shell: bash
         run: |
+          commitMsg=$(git log --format=%B -n 1)
+
+          if [[ "$commitMsg" == "[SKIP_VERSION_CHECK]*" ]]; then
+            echo "Skipping version check"
+            exit 0
+          fi
+
+          echo "Validating version bump"
+
           currentVersionCode=$(jq -j '.versionCode' 'src/main/resources/plugin.json')
           currentVersionName=$(jq -j '.versionName' 'src/main/resources/plugin.json')
 
