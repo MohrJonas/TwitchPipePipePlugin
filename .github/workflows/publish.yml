@@ -23,7 +23,7 @@ jobs:
           commitMsg=$(git log --format=%B -n 1)
           echo "Commit message is: \"$commitMsg\""
 
-          if [[ "${commitMsg:0:19}" == "[SKIP_VERSION_CHECK]" ]]; then
+          if [[ "${commitMsg:0:20}" == "[SKIP_VERSION_CHECK]" ]]; then
             echo "Skipping version check"
             exit 0
           fi
