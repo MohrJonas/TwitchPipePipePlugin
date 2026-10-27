@@ -18,9 +18,11 @@ jobs:
       - name: Validate bump of versionCode and versionName
         shell: bash
         run: |
+          set -eu -o pipefail
+
           commitMsg=$(git log --format=%B -n 1)
 
-          if [[ "$commitMsg" == "[SKIP_VERSION_CHECK]*" ]]; then
+          if [[ "$commitMsg" == "\[SKIP_VERSION_CHECK\]"* ]]; then
             echo "Skipping version check"
             exit 0
           fi
