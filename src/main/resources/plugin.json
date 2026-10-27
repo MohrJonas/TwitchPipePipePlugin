@@ -1,20 +1,55 @@
 {
-  "pluginId": "com.example.myservice",
-  "name": "MyService",
+  "pluginId": "mohr.jonas.twitch",
+  "name": "Twitch",
   "versionCode": 1,
   "versionName": "1.0.0",
   "apiVersion": "1.0",
-  "author": "Your Name",
-  "entryClass": "com.example.myservice.MyServicePlugin",
-  "description": "Describe what this service provides.",
+  "author": "Jonas Mohr",
+  "entryClass": "mohr.jonas.twitch.TwitchPlugin",
+  "description": "Provides access to Twitch, the well-known streaming service",
   "icon": "icon.png",
   "settings": [
     {
-      "key": "base_url",
+      "key": "twitch_token",
       "type": "string",
-      "title": "Base URL",
-      "summary": "Override the site used by this service",
-      "default": "https://example.com"
+      "title": "Twitch token",
+      "summary": "Twitch OAuth token to use for authentication against the helix API",
+      "default": null
+    },
+    {
+      "key": "twitch_use_token_kiosk",
+      "type": "boolean",
+      "title": "Use token for kiosk",
+      "summary": "Whether to use the provided token to fetch data for the kiosk.\nNot using a token will only show the top 30 streams.",
+      "default": false
+    },
+    {
+      "key": "twitch_use_token_search",
+      "type": "boolean",
+      "title": "Use token for search",
+      "summary": "Whether to use the provided token to fetch search results.\nNot using a token will only show the first ~30 results.",
+      "default": false
+    },
+    {
+      "key": "twitch_use_token_categories",
+      "type": "boolean",
+      "title": "Use token for categories",
+      "summary": "Whether to use the provided token to fetch the streams of a category.\nNot using a token will only show the top 100 streams.",
+      "default": false
+    },
+    {
+      "key": "twitch_use_token_clips",
+      "type": "boolean",
+      "title": "Use token for clips",
+      "summary": "Whether to use the provided token to fetch the clips of a channel.\nNot using a token will only show the top 100 clips.",
+      "default": false
+    },
+    {
+      "key": "twitch_use_token_vods",
+      "type": "boolean",
+      "title": "Use token for vods",
+      "summary": "Whether to use the provided token to fetch the vods of a channel.\\nNot using a token will only show the ~30 latest vods.",
+      "default": false
     }
   ]
 }
