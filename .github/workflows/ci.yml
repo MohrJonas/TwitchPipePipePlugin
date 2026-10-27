@@ -3,16 +3,27 @@ name: CI
 on:
   pull_request:
   push:
-    branches-ignore: [main]
+    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validate bump of versionCode and versionName
+        shell: bash
+        run: |
+          currentVersionCode=$(jq -j '.versionCode' 'src/main/resources/plugin.json')
+          currentVersionName=$(jq -j '.versionName' 'src/main/resources/plugin.json')
+
+          lastVersionCode=$(git show HEAD~1:src/main/resources/plugin.json | jq -j '.versionCode')
+          lastVersionName=$(git show HEAD~1:src/main/resources/plugin.json | jq -j '.versionName')
+
+          test "$currentVersionCode" != "$lastVersionCode" && test "$currentVersionName" != "$lastVersionName"
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -22,8 +33,22 @@ jobs:
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;37.0.0" "platforms;android-36"
-      # Only checks that the plugin builds, dexes and produces a valid index; the key is thrown away.
-      - name: Build and index with a throwaway key
+      - name: Write signing key to file
+        env:
+          SIGNING_KEY: ${{secrets.SIGNING_KEY}}
+        shell: bash
+        run: echo "$SIGNING_KEY" > $RUNNER_TEMP/signing.key
+      - name: Build
+        run: ./gradlew :tools:index -PpluginSigningKey="$RUNNER_TEMP/signing.key"
+      - name: Upload to release
+        working-directory: build/repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
-          ./gradlew :tools:genKey -PpluginSigningKey="$RUNNER_TEMP/ci.key"
-          ./gradlew :tools:index -PpluginSigningKey="$RUNNER_TEMP/ci.key"
+          if ! gh release view repo > /dev/null 2>&1; then
+            gh release create repo --target "$GITHUB_SHA" --title "Plugin repository" \
+              --notes "Plugin packages and index.json, updated automatically."
+          fi
+          gh release upload repo ./*.ppp --clobber
+          gh release upload repo index.json --clobber
