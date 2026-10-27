@@ -21,6 +21,7 @@ jobs:
           set -eu -o pipefail
 
           commitMsg=$(git log --format=%B -n 1)
+          echo "Commit message is: $commitMsg"
 
           if [[ "$commitMsg" == "\[SKIP_VERSION_CHECK\]"* ]]; then
             echo "Skipping version check"
