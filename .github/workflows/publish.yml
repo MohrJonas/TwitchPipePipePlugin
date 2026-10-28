@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '2'
+      - name: Validate bump of versionCode and versionName
+        shell: bash
+        run: |
+          set -eu -o pipefail
+
+          commitMsg=$(git log --format=%B -n 1)
+          echo "Commit message is: \"$commitMsg\""
+
+          if [[ "${commitMsg:0:20}" == "[SKIP_VERSION_CHECK]" ]]; then
+            echo "Skipping version check"
+            exit 0
+          fi
+
+          echo "Validating version bump"
+
+          currentVersionCode=$(jq -j '.versionCode' 'src/main/resources/plugin.json')
+          currentVersionName=$(jq -j '.versionName' 'src/main/resources/plugin.json')
+
+          lastVersionCode=$(git show HEAD~1:src/main/resources/plugin.json | jq -j '.versionCode')
+          lastVersionName=$(git show HEAD~1:src/main/resources/plugin.json | jq -j '.versionName')
+
+          test "$currentVersionCode" != "$lastVersionCode" && test "$currentVersionName" != "$lastVersionName"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install Android build tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;37.0.0" "platforms;android-36"
+      - name: Write signing key to file
+        env:
+          SIGNING_KEY: ${{secrets.SIGNING_KEY}}
+        shell: bash
+        run: echo "$SIGNING_KEY" > $RUNNER_TEMP/signing.key
+      - name: Build
+        run: ./gradlew :tools:index -PpluginSigningKey="$RUNNER_TEMP/signing.key"
+      - name: Upload to release
+        working-directory: build/repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if ! gh release view repo > /dev/null 2>&1; then
+            gh release create repo --target "$GITHUB_SHA" --title "Plugin repository" \
+              --notes "Plugin packages and index.json, updated automatically."
+          fi
+          gh release upload repo ./*.ppp --clobber
+          gh release upload repo index.json --clobber
