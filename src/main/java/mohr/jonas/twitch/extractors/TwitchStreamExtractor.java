@@ -12,17 +12,6 @@ import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.LinkHandler;
-import mohr.jonas.twitch.TwitchUrlBuilder;
-import mohr.jonas.twitch.TwitchUrlParser;
-import mohr.jonas.twitch.api.TwitchApiClient;
-import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
-import mohr.jonas.twitch.data.Resolution;
-import mohr.jonas.twitch.data.TwitchVideoStream;
-import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
-import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
-import mohr.jonas.twitch.data.api.responses.TwitchSideNavResponseInner;
-import mohr.jonas.twitch.data.api.responses.channel.TwitchChannelResponseInner;
-import mohr.jonas.twitch.data.api.responses.stream.TwitchStreamResponseInner;
 import org.schabi.newpipe.extractor.stream.AudioStream;
 import org.schabi.newpipe.extractor.stream.DeliveryMethod;
 import org.schabi.newpipe.extractor.stream.StreamExtractor;
@@ -40,6 +29,18 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import mohr.jonas.twitch.TwitchUrlBuilder;
+import mohr.jonas.twitch.TwitchUrlParser;
+import mohr.jonas.twitch.api.TwitchApiClient;
+import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
+import mohr.jonas.twitch.data.Resolution;
+import mohr.jonas.twitch.data.TwitchVideoStream;
+import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
+import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
+import mohr.jonas.twitch.data.api.responses.TwitchSideNavResponseInner;
+import mohr.jonas.twitch.data.api.responses.channel.TwitchChannelResponseInner;
+import mohr.jonas.twitch.data.api.responses.stream.TwitchStreamResponseInner;
 
 public class TwitchStreamExtractor extends StreamExtractor {
 
@@ -111,7 +112,8 @@ public class TwitchStreamExtractor extends StreamExtractor {
 
     @Nullable
     @Override
-    public InfoItemsCollector<? extends InfoItem, ? extends InfoItemExtractor> getRelatedItems() throws IOException, ExtractionException {
+    public InfoItemsCollector<? extends InfoItem, ? extends InfoItemExtractor> getRelatedItems() throws IOException,
+            ExtractionException {
         return new StreamInfoItemsCollector(getServiceId()) {
             @Override
             public List<StreamInfoItem> getItems() {

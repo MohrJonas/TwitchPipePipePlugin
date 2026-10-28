@@ -5,6 +5,7 @@ import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonWriter;
 
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator;
 import org.bouncycastle.crypto.params.Ed25519KeyGenerationParameters;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
@@ -46,12 +47,50 @@ public final class PluginTool {
     public static void main(final String[] args) throws Exception {
         if (args.length == 2 && args[0].equals("genkey")) {
             genKey(new File(args[1]));
+        } else if (args.length == 2 && args[0].equals("pubkey")) {
+            genPubKey(new File(args[1]));
         } else if (args.length == 4 && args[0].equals("index")) {
             index(new File(args[1]), new File(args[2]), args[3]);
+        } else if (args.length == 3 && args[0].equals("sign")) {
+            sign(args[1], new File(args[2]));
         } else {
             System.err.println("usage: genkey <key> | index <key> <repo-dir> <repo-name>");
             System.exit(2);
         }
+    }
+
+    private static void sign(final String hash, final File keyFile)
+            throws IOException {
+
+        // Convert the 64-character hexadecimal SHA-256 digest to 32 raw bytes
+        byte[] digest = Hex.decode(hash);
+
+        if (digest.length != 32) {
+            throw new IllegalArgumentException("Expected a 32-byte SHA-256 digest");
+        }
+
+        byte[] privateKey = Base64.decode(Files.readAllBytes(keyFile.toPath()));
+
+        Ed25519PrivateKeyParameters privateParams =
+                new Ed25519PrivateKeyParameters(privateKey, 0);
+
+        Ed25519Signer signer = new Ed25519Signer();
+        signer.init(true, privateParams);
+        signer.update(digest, 0, digest.length);
+
+        byte[] signature = signer.generateSignature();
+
+        System.out.println(Base64.toBase64String(signature));
+    }
+
+    private static void genPubKey(final File pubKeyFile) throws IOException {
+        byte[] privateKey = Base64.decode(Files.readAllBytes(pubKeyFile.toPath()));
+
+        Ed25519PrivateKeyParameters privateParams = new Ed25519PrivateKeyParameters(privateKey, 0);
+
+        Ed25519PublicKeyParameters publicParams = privateParams.generatePublicKey();
+
+        System.out.println(new String((Base64.encode(publicParams.getEncoded()))));
     }
 
     private static void genKey(final File keyFile) throws IOException {

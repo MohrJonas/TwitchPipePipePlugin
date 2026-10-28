@@ -1,11 +1,11 @@
 package mohr.jonas.twitch;
 
-import mohr.jonas.twitch.data.Resolution;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
+
+import mohr.jonas.twitch.data.Resolution;
 
 public final class TwitchUtils {
 

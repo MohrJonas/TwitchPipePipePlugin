@@ -8,6 +8,10 @@
   "entryClass": "mohr.jonas.twitch.TwitchPlugin",
   "description": "Provides access to Twitch, the well-known streaming service",
   "icon": "icon.png",
+  "theme": {
+    "light": "#9147FF",
+    "dark": "#472678"
+  },
   "settings": [
     {
       "key": "twitch_token",
@@ -48,7 +52,7 @@
       "key": "twitch_use_token_vods",
       "type": "boolean",
       "title": "Use token for vods",
-      "summary": "Whether to use the provided token to fetch the vods of a channel.\\nNot using a token will only show the ~30 latest vods.",
+      "summary": "Whether to use the provided token to fetch the vods of a channel.\nNot using a token will only show the ~30 latest vods.",
       "default": false
     }
   ]

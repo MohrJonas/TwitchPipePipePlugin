@@ -1,12 +1,13 @@
 package mohr.jonas.twitch;
 
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
+
 import mohr.jonas.twitch.data.TwitchChannelTabLinkType;
 import mohr.jonas.twitch.data.api.pagination.Pagination;
 import mohr.jonas.twitch.data.api.pagination.TwitchPaginationHelper;
 import mohr.jonas.twitch.url.UrlBuilder;
-
-import javax.annotation.Nonnull;
 
 public final class TwitchUrlBuilder {
 

@@ -15,6 +15,22 @@ tasks.register('genKey', JavaExec) {
     args 'genkey', signingKey.get()
 }
 
+tasks.register('pubkey', JavaExec) {
+    group = 'plugin'
+    description = 'Derive pub key from private key'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.pipepipe.plugin.tools.PluginTool'
+    args 'pubkey', signingKey.get()
+}
+
+tasks.register('sign', JavaExec) {
+    group = 'plugin'
+    description = 'Derive pub key from private key'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.pipepipe.plugin.tools.PluginTool'
+    args 'sign', '76f4abf9eb64ed795f7fa78148f72be189efd3c2debf9aa4009f88bf998a6e7d', signingKey.get()
+}
+
 tasks.register('index', JavaExec) {
     group = 'plugin'
     description = 'Sign all packages in build/repo and write build/repo/index.json'

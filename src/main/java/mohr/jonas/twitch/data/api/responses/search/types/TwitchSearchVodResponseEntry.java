@@ -1,8 +1,8 @@
 package mohr.jonas.twitch.data.api.responses.search.types;
 
-import mohr.jonas.twitch.data.api.responses.search.TwitchSearchBaseResponseEntry;
-
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.data.api.responses.search.TwitchSearchBaseResponseEntry;
 
 public final class TwitchSearchVodResponseEntry extends TwitchSearchBaseResponseEntry {
 

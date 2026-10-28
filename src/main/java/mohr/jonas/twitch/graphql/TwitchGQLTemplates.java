@@ -5,14 +5,15 @@ import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonWriter;
 
 import org.jetbrains.annotations.Nullable;
-import mohr.jonas.twitch.TwitchUtils;
-import mohr.jonas.twitch.data.api.requests.TwitchGqlRequestBuilder;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.TwitchUtils;
+import mohr.jonas.twitch.data.api.requests.TwitchGqlRequestBuilder;
 
 public final class TwitchGQLTemplates {
     private static final String STREAM_PLAYBACK_ACCESS_TOKEN_TEMPLATE = "{\"query\": \"{\\n" +

@@ -11,6 +11,15 @@ import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
 import org.schabi.newpipe.extractor.playlist.PlaylistExtractor;
+import org.schabi.newpipe.extractor.stream.StreamInfoItem;
+import org.schabi.newpipe.extractor.stream.StreamType;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+
+import javax.annotation.Nonnull;
+
 import mohr.jonas.twitch.TwitchUrlBuilder;
 import mohr.jonas.twitch.TwitchUrlParser;
 import mohr.jonas.twitch.api.TwitchApiClient;
@@ -20,14 +29,6 @@ import mohr.jonas.twitch.data.api.pagination.Pagination;
 import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
 import mohr.jonas.twitch.data.api.responses.directory.TwitchDirectoryResponseEntry;
 import mohr.jonas.twitch.data.api.responses.directory.TwitchHelixDirectoryResponseInner;
-import org.schabi.newpipe.extractor.stream.StreamInfoItem;
-import org.schabi.newpipe.extractor.stream.StreamType;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-
-import javax.annotation.Nonnull;
 
 public class TwitchPlaylistExtractor extends PlaylistExtractor {
 
@@ -75,7 +76,8 @@ public class TwitchPlaylistExtractor extends PlaylistExtractor {
         return PlaylistExtractor.ITEM_COUNT_UNKNOWN;
     }
 
-    private void populateData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException, ExtractionException {
+    private void populateData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException,
+            ExtractionException {
         try {
             final var categoryUrl = TwitchUrlParser.parseCategoryUrl(url);
             pagination = categoryUrl.pagination();

@@ -18,15 +18,6 @@ import org.schabi.newpipe.extractor.playlist.PlaylistInfo;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItem;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItemExtractor;
 import org.schabi.newpipe.extractor.search.SearchExtractor;
-import mohr.jonas.twitch.TwitchUrlParser;
-import mohr.jonas.twitch.api.TwitchApiClient;
-import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
-import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
-import mohr.jonas.twitch.data.api.responses.search.TwitchSearchResponse;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchChannelResponseEntry;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchGameResponseEntry;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchStreamResponseEntry;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchVodResponseEntry;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamInfoItemExtractor;
 import org.schabi.newpipe.extractor.stream.StreamType;
@@ -36,6 +27,15 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import mohr.jonas.twitch.TwitchUrlBuilder;
+import mohr.jonas.twitch.TwitchUrlParser;
+import mohr.jonas.twitch.api.TwitchApiClient;
+import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
+import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
+import mohr.jonas.twitch.data.api.responses.search.TwitchSearchResponse;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchChannelResponseEntry;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchGameResponseEntry;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchStreamResponseEntry;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchVodResponseEntry;
 
 public class TwitchSearchExtractor extends SearchExtractor {
 

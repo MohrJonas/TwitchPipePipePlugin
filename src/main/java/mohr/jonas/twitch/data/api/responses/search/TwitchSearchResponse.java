@@ -4,12 +4,6 @@ import com.grack.nanojson.JsonArray;
 import com.grack.nanojson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import mohr.jonas.twitch.data.api.TwitchExtensionsData;
-import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchChannelResponseEntry;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchGameResponseEntry;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchStreamResponseEntry;
-import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchVodResponseEntry;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +11,13 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import mohr.jonas.twitch.data.api.TwitchExtensionsData;
+import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchChannelResponseEntry;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchGameResponseEntry;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchStreamResponseEntry;
+import mohr.jonas.twitch.data.api.responses.search.types.TwitchSearchVodResponseEntry;
 
 public final class TwitchSearchResponse extends TwitchBaseResponse<List<TwitchSearchBaseResponseEntry>> {
 

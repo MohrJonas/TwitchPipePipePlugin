@@ -3,9 +3,10 @@ package mohr.jonas.twitch.linkHandlers;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandlerFactory;
 import org.schabi.newpipe.extractor.search.filter.FilterItem;
-import mohr.jonas.twitch.TwitchUrlParser;
 
 import java.util.List;
+
+import mohr.jonas.twitch.TwitchUrlParser;
 
 public final class TwitchChannelLinkHandlerFactory extends ListLinkHandlerFactory {
     @Override

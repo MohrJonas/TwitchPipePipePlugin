@@ -1,10 +1,5 @@
 package mohr.jonas.twitch;
 
-import mohr.jonas.twitch.data.TwitchChannelTabLinkType;
-import mohr.jonas.twitch.data.api.pagination.TwitchPaginationHelper;
-import mohr.jonas.twitch.data.url.CategoryUrl;
-import mohr.jonas.twitch.data.url.ChannelUrl;
-import mohr.jonas.twitch.data.url.SearchUrl;
 import org.schabi.newpipe.extractor.utils.Utils;
 
 import java.net.MalformedURLException;
@@ -12,6 +7,12 @@ import java.net.URL;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.data.TwitchChannelTabLinkType;
+import mohr.jonas.twitch.data.api.pagination.TwitchPaginationHelper;
+import mohr.jonas.twitch.data.url.CategoryUrl;
+import mohr.jonas.twitch.data.url.ChannelUrl;
+import mohr.jonas.twitch.data.url.SearchUrl;
 
 public final class TwitchUrlParser {
 
@@ -36,7 +37,11 @@ public final class TwitchUrlParser {
     }
 
     private static void ensureIsCorrectBaseUrl(@Nonnull final String urlString) {
-        Assertions.assertThat(() -> Utils.removeMAndWWWFromUrl(urlString).startsWith(TwitchService.BaseUrl));
+        Assertions.assertThat(
+                () -> Utils.removeMAndWWWFromUrl(urlString).startsWith(TwitchService.BaseUrl),
+                String.format("Expected url '%s' to start with '%s'", urlString,
+                        TwitchService.BaseUrl)
+        );
     }
 
     public static @Nonnull SearchUrl parseSearchUrl(@Nonnull final String urlString) {
@@ -72,10 +77,16 @@ public final class TwitchUrlParser {
         final var url = stringToUrl(urlString);
 
         final var path = getPath(url);
-        Assertions.assertThat(() -> !path.isEmpty());
+        Assertions.assertThat(
+                () -> !path.isEmpty(),
+                AssertionMessages.pathIsNotEmptyMessage(path)
+        );
 
         final var pathParts = path.split("/");
-        Assertions.assertThat(() -> pathParts.length == 1 || pathParts.length == 2);
+        Assertions.assertThat(
+                () -> pathParts.length == 1 || pathParts.length == 2,
+                AssertionMessages.pathHasWrongLength(pathParts.length, 1, 2)
+        );
 
         var tabType = TwitchChannelTabLinkType.FRONT;
 
@@ -109,14 +120,26 @@ public final class TwitchUrlParser {
 
         final var url = stringToUrl(urlString);
 
-        Assertions.assertThat(() -> url.getQuery() == null);
+        Assertions.assertThat(
+                () -> url.getQuery() == null,
+                AssertionMessages.queryIsNotEmpty(url.getQuery())
+        );
 
         final var path = getPath(url);
-        Assertions.assertThat(() -> !path.isEmpty());
+        Assertions.assertThat(
+                () -> !path.isEmpty(),
+                AssertionMessages.pathIsNotEmptyMessage(path)
+        );
 
         final var pathParts = path.split("/");
-        Assertions.assertThat(() -> pathParts.length == 2);
-        Assertions.assertThat(() -> pathParts[0].equals("clip"));
+        Assertions.assertThat(
+                () -> pathParts.length == 2,
+                AssertionMessages.pathHasWrongLength(pathParts.length, 2)
+        );
+        Assertions.assertThat(
+                () -> pathParts[0].equals("clip"),
+                AssertionMessages.pathSegmentDoesNotMatch(pathParts[0], "clips")
+        );
 
         return pathParts[1];
     }
@@ -126,23 +149,43 @@ public final class TwitchUrlParser {
 
         final var url = stringToUrl(urlString);
 
-        Assertions.assertThat(() -> url.getQuery() == null);
+        Assertions.assertThat(
+                () -> url.getQuery() == null,
+                AssertionMessages.queryIsNotEmpty(url.getQuery())
+        );
 
         final var path = getPath(url);
-        Assertions.assertThat(() -> !path.isEmpty());
+        Assertions.assertThat(() -> !path.isEmpty(),
+                AssertionMessages.pathIsNotEmptyMessage(path)
+        );
 
         final var pathParts = path.split("/");
-        Assertions.assertThat(() -> pathParts.length == 2);
-        Assertions.assertThat(() -> pathParts[0].equals("videos"));
+        Assertions.assertThat(
+                () -> pathParts.length == 2,
+                AssertionMessages.pathHasWrongLength(pathParts.length, 2)
+        );
+        Assertions.assertThat(
+                () -> pathParts[0].equals("videos"),
+                AssertionMessages.pathSegmentDoesNotMatch(pathParts[0], "videos")
+        );
         return pathParts[1];
     }
 
     public static @Nonnull String parsePaginationFromKioskUrl(@Nonnull final String urlString) {
-        Assertions.assertThat(() -> urlString.contains("?"));
+        Assertions.assertThat(
+                () -> urlString.contains("?"),
+                String.format("Expected url '%s' to contain '?'", urlString)
+        );
 
         final var parts = urlString.split("\\?");
-        Assertions.assertThat(() -> parts.length == 2);
-        Assertions.assertThat(() -> parts[0].equals("live"));
+        Assertions.assertThat(
+                () -> parts.length == 2,
+                AssertionMessages.pathHasWrongLength(parts.length, 2)
+        );
+        Assertions.assertThat(
+                () -> parts[0].equals("live"),
+                AssertionMessages.pathSegmentDoesNotMatch(parts[0], "live")
+        );
 
         return parts[1];
     }
@@ -153,12 +196,24 @@ public final class TwitchUrlParser {
         final var url = stringToUrl(urlString);
 
         final var path = getPath(url);
-        Assertions.assertThat(() -> !path.isEmpty());
+        Assertions.assertThat(
+                () -> !path.isEmpty(),
+                AssertionMessages.pathIsNotEmptyMessage(path)
+        );
 
         final var pathParts = path.split("/");
-        Assertions.assertThat(() -> pathParts.length == 2 || pathParts.length == 3);
-        Assertions.assertThat(() -> pathParts[0].equals("directory"));
-        Assertions.assertThat(() -> pathParts[1].equals("category"));
+        Assertions.assertThat(
+                () -> pathParts.length == 2 || pathParts.length == 3,
+                AssertionMessages.pathHasWrongLength(pathParts.length, 2, 3)
+        );
+        Assertions.assertThat(
+                () -> pathParts[0].equals("directory"),
+                AssertionMessages.pathSegmentDoesNotMatch(pathParts[0], "directory")
+        );
+        Assertions.assertThat(
+                () -> pathParts[1].equals("category"),
+                AssertionMessages.pathSegmentDoesNotMatch(pathParts[1], "category")
+        );
 
         final var id = getRequiredQueryParameter(url, "_id");
         final var name = getRequiredQueryParameter(url, "_name");

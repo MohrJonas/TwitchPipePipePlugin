@@ -5,8 +5,6 @@ import com.grack.nanojson.JsonParserException;
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
-import mohr.jonas.twitch.StringUtils;
-import mohr.jonas.twitch.TwitchUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +12,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.StringUtils;
+import mohr.jonas.twitch.TwitchUtils;
 
 public class TwitchBaseApiClient {
 
@@ -25,7 +26,8 @@ public class TwitchBaseApiClient {
                                       @Nonnull final Function<String, String> urlGenerator,
                                       @Nonnull final Function<String, String> bodyGenerator,
                                       @Nonnull final Function<String, Map<String, List<String>>> headerGenerator,
-                                      @Nonnull final Function<Response, T> mapper) throws IOException, ReCaptchaException, JsonParserException {
+                                      @Nonnull final Function<Response, T> mapper) throws IOException,
+            ReCaptchaException, JsonParserException {
 
         final var requestId = TwitchApiHelper.generateRandomRequestId();
 

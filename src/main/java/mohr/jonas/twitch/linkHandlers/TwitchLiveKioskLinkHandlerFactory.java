@@ -3,13 +3,14 @@ package mohr.jonas.twitch.linkHandlers;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandlerFactory;
 import org.schabi.newpipe.extractor.search.filter.FilterItem;
+
+import java.util.List;
+
 import mohr.jonas.twitch.TwitchUrlBuilder;
 import mohr.jonas.twitch.TwitchUrlParser;
 import mohr.jonas.twitch.api.TwitchApiSettings;
 import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
 import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
-
-import java.util.List;
 
 public class TwitchLiveKioskLinkHandlerFactory extends ListLinkHandlerFactory {
 

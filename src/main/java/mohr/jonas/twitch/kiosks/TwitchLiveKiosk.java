@@ -10,15 +10,6 @@ import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.kiosk.KioskExtractor;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
-import mohr.jonas.twitch.TwitchUrlBuilder;
-import mohr.jonas.twitch.TwitchUrlParser;
-import mohr.jonas.twitch.api.TwitchApiClient;
-import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
-import mohr.jonas.twitch.data.api.pagination.Pagination;
-import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
-import mohr.jonas.twitch.data.api.pagination.TwitchPaginationHelper;
-import mohr.jonas.twitch.data.api.responses.nowLive.TwitchHelixNowLiveResponseInner;
-import mohr.jonas.twitch.data.api.responses.nowLive.TwitchNowLiveResponseEntry;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamType;
 
@@ -28,6 +19,16 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.TwitchUrlBuilder;
+import mohr.jonas.twitch.TwitchUrlParser;
+import mohr.jonas.twitch.api.TwitchApiClient;
+import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
+import mohr.jonas.twitch.data.api.pagination.Pagination;
+import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
+import mohr.jonas.twitch.data.api.pagination.TwitchPaginationHelper;
+import mohr.jonas.twitch.data.api.responses.nowLive.TwitchHelixNowLiveResponseInner;
+import mohr.jonas.twitch.data.api.responses.nowLive.TwitchNowLiveResponseEntry;
 
 public class TwitchLiveKiosk extends KioskExtractor<StreamInfoItem> {
 
@@ -51,7 +52,8 @@ public class TwitchLiveKiosk extends KioskExtractor<StreamInfoItem> {
         fetchData(downloader, getUrl());
     }
 
-    private void fetchData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException, ExtractionException {
+    private void fetchData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException,
+            ExtractionException {
         try {
             final var paginationString = TwitchUrlParser.parsePaginationFromKioskUrl(url);
             pagination = TwitchPaginationHelper.getPaginationFromString(paginationString);
@@ -131,8 +133,8 @@ public class TwitchLiveKiosk extends KioskExtractor<StreamInfoItem> {
                                     liveEntry.streamerLoginName(),
                                     liveEntry.streamerId(),
                                     apiClient.getApiSettings().shouldUseHelixForVods()
-                                        ? CursorBasedPagination.DEFAULT_CURSOR_PAGINATION
-                                        : PositionBasedPagination.DEFAULT_POSITION_PAGINATION
+                                            ? CursorBasedPagination.DEFAULT_CURSOR_PAGINATION
+                                            : PositionBasedPagination.DEFAULT_POSITION_PAGINATION
                             ));
                             infoItem.setShortDescription(liveEntry.gameName());
                             infoItem.setUploaderAvatarUrl(liveEntry.thumbnailUrl());

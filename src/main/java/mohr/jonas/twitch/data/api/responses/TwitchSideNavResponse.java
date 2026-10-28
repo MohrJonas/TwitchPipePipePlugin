@@ -3,12 +3,13 @@ package mohr.jonas.twitch.data.api.responses;
 import com.grack.nanojson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import mohr.jonas.twitch.data.api.TwitchExtensionsData;
 
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import mohr.jonas.twitch.data.api.TwitchExtensionsData;
 
 public class TwitchSideNavResponse extends TwitchBaseResponse<TwitchSideNavResponseInner[]> {
 

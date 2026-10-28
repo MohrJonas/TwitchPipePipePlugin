@@ -1,7 +1,7 @@
 package mohr.jonas.twitch;
 
-import static org.schabi.newpipe.extractor.StreamingService.ServiceInfo.MediaCapability.VIDEO;
 import static org.schabi.newpipe.extractor.StreamingService.ServiceInfo.MediaCapability.LIVE;
+import static org.schabi.newpipe.extractor.StreamingService.ServiceInfo.MediaCapability.VIDEO;
 
 import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.extractor.channel.ChannelExtractor;
@@ -51,10 +51,8 @@ import mohr.jonas.twitch.linkHandlers.TwitchStreamLinkHandlerFactory;
 public class TwitchService extends StreamingService {
 
     public static final String BaseUrl = "https://twitch.tv";
-
-    private TwitchApiClient twitchApiClient;
-
     private final PluginPreferences preferences;
+    private TwitchApiClient twitchApiClient;
 
     public TwitchService(final int id, final PluginPreferences preferences) {
         super(id, "Twitch", List.of(LIVE, VIDEO));
@@ -156,14 +154,11 @@ public class TwitchService extends StreamingService {
             throws ExtractionException {
         final var channelUrl = TwitchUrlParser.parseChannelUrl(linkHandler.getUrl());
         return switch (channelUrl.tabType()) {
-            case CLIPS ->
-                    new TwitchChannelClipExtractor(this, linkHandler,
-                            getOrInitializeTwitchClient());
-            case VIDEOS ->
-                    new TwitchChannelVodExtractor(this, linkHandler, getOrInitializeTwitchClient());
-            case LIVE ->
-                    new TwitchChannelStreamExtractor(this, linkHandler,
-                            getOrInitializeTwitchClient());
+            case CLIPS -> new TwitchChannelClipExtractor(this, linkHandler,
+                    getOrInitializeTwitchClient());
+            case VIDEOS -> new TwitchChannelVodExtractor(this, linkHandler, getOrInitializeTwitchClient());
+            case LIVE -> new TwitchChannelStreamExtractor(this, linkHandler,
+                    getOrInitializeTwitchClient());
             default -> throw new IllegalStateException("Unexpected value: " + channelUrl.tabType());
         };
     }

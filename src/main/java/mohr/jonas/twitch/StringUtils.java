@@ -1,7 +1,5 @@
 package mohr.jonas.twitch;
 
-import org.jsoup.helper.Regex;
-
 import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 
@@ -15,7 +13,7 @@ public final class StringUtils {
         return string.getBytes(Charset.defaultCharset());
     }
 
-    public static boolean isAllBlank(@Nonnull final String s)  {
+    public static boolean isAllBlank(@Nonnull final String s) {
         return allBlankPattern.matcher(s).matches();
     }
 }

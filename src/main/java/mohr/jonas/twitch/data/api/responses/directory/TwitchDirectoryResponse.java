@@ -4,6 +4,7 @@ import com.grack.nanojson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import mohr.jonas.twitch.data.api.TwitchExtensionsData;
 import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
 

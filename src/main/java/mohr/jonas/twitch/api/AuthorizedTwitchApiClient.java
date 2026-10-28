@@ -5,6 +5,13 @@ import com.grack.nanojson.JsonParserException;
 
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+
+import java.io.IOException;
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import mohr.jonas.twitch.data.api.responses.clip.TwitchHelixClipResponseInner;
 import mohr.jonas.twitch.data.api.responses.clip.TwitchHelixClipResponseInnerEntry;
 import mohr.jonas.twitch.data.api.responses.directory.TwitchDirectoryResponseEntry;
@@ -13,12 +20,6 @@ import mohr.jonas.twitch.data.api.responses.nowLive.TwitchHelixNowLiveResponseIn
 import mohr.jonas.twitch.data.api.responses.nowLive.TwitchNowLiveResponseEntry;
 import mohr.jonas.twitch.data.api.responses.vod.TwitchHelixVodResponse;
 import mohr.jonas.twitch.data.api.responses.vod.TwitchHelixVodResponseEntry;
-
-import java.io.IOException;
-import java.util.Objects;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
 
@@ -29,7 +30,8 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
         this.helixApiToken = helixApiToken;
     }
 
-    public TwitchHelixNowLiveResponseInner getNowLiveInformation(@Nonnull final Downloader downloader, @Nullable final String cursor) throws JsonParserException, IOException, ReCaptchaException {
+    public TwitchHelixNowLiveResponseInner getNowLiveInformation(@Nonnull final Downloader downloader,
+                                                                 @Nullable final String cursor) throws JsonParserException, IOException, ReCaptchaException {
         return performRawRequest(downloader, HttpRequestType.GET,
                 _ -> {
                     var url = TwitchApiConstants.TWITCH_HELIX_URL + "/streams";
@@ -38,7 +40,8 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
                     return url;
                 },
                 _ -> null,
-                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken), TwitchApiConstants.HELIX_CLIENT_ID),
+                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken),
+                        TwitchApiConstants.HELIX_CLIENT_ID),
                 response -> {
                     final var obj =
                             TwitchJsonHelper.parseJsonObjectFromString(response.responseBody());
@@ -67,7 +70,10 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public TwitchHelixDirectoryResponseInner getDirectoryInformation(@Nonnull final Downloader downloader, @Nonnull final String directoryName, @Nonnull final String categoryId, @Nullable final String cursor) throws JsonParserException, IOException, ReCaptchaException {
+    public TwitchHelixDirectoryResponseInner getDirectoryInformation(@Nonnull final Downloader downloader,
+                                                                     @Nonnull final String directoryName,
+                                                                     @Nonnull final String categoryId,
+                                                                     @Nullable final String cursor) throws JsonParserException, IOException, ReCaptchaException {
         return performRawRequest(downloader, HttpRequestType.GET,
                 _ -> {
                     var url =
@@ -77,7 +83,8 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
                     return url;
                 },
                 _ -> null,
-                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken), TwitchApiConstants.HELIX_CLIENT_ID),
+                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken),
+                        TwitchApiConstants.HELIX_CLIENT_ID),
                 response -> {
                     final var obj =
                             TwitchJsonHelper.parseJsonObjectFromString(response.responseBody());
@@ -114,7 +121,8 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
 
     public TwitchHelixClipResponseInner getClips(@Nonnull final Downloader downloader,
                                                  @Nonnull final String channelId,
-                                                 @Nullable final String cursor) throws JsonParserException, IOException, ReCaptchaException {
+                                                 @Nullable final String cursor) throws JsonParserException,
+            IOException, ReCaptchaException {
         return performRawRequest(downloader, HttpRequestType.GET,
                 _ -> {
                     var url =
@@ -124,7 +132,8 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
                     return url;
                 },
                 _ -> null,
-                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken), TwitchApiConstants.HELIX_CLIENT_ID),
+                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken),
+                        TwitchApiConstants.HELIX_CLIENT_ID),
                 response -> {
                     final var obj =
                             TwitchJsonHelper.parseJsonObjectFromString(response.responseBody());
@@ -155,7 +164,8 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
 
     public TwitchHelixVodResponse getVods(@Nonnull final Downloader downloader,
                                           @Nonnull final String channelId,
-                                          @Nullable final String cursor) throws JsonParserException, IOException, ReCaptchaException {
+                                          @Nullable final String cursor) throws JsonParserException, IOException,
+            ReCaptchaException {
         return performRawRequest(downloader, HttpRequestType.GET,
                 _ -> {
                     var url = TwitchApiConstants.TWITCH_HELIX_URL + "/videos?user_id=" + channelId;
@@ -164,7 +174,8 @@ public final class AuthorizedTwitchApiClient extends TwitchBaseApiClient {
                     return url;
                 },
                 _ -> null,
-                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken), TwitchApiConstants.HELIX_CLIENT_ID),
+                _ -> TwitchApiHelper.buildHelixRequestHeaders(Objects.requireNonNull(helixApiToken),
+                        TwitchApiConstants.HELIX_CLIENT_ID),
                 response -> {
                     final var obj =
                             TwitchJsonHelper.parseJsonObjectFromString(response.responseBody());
