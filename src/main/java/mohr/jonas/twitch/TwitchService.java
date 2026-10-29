@@ -63,11 +63,11 @@ public class TwitchService extends StreamingService {
         if (twitchApiClient == null)
             twitchApiClient = new TwitchApiClient(
                     new TwitchApiSettings(
-                            preferences.getBoolean("twitch_use_token_kiosk", false),
-                            preferences.getBoolean("twitch_use_token_categories", false),
-                            preferences.getBoolean("twitch_use_token_vods", false),
-                            preferences.getBoolean("twitch_use_token_clips", false),
-                            preferences.getBoolean("twitch_use_token_search", false)
+                            preferences.getBoolean("twitch_use_token_kiosk"),
+                            preferences.getBoolean("twitch_use_token_categories"),
+                            preferences.getBoolean("twitch_use_token_vods"),
+                            preferences.getBoolean("twitch_use_token_clips"),
+                            preferences.getBoolean("twitch_use_token_search")
                     ),
                     getTokens()
             );

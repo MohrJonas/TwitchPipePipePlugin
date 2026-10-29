@@ -145,7 +145,7 @@ public final class TwitchGQLTemplates {
             }
         }
         return JsonWriter.string(new TwitchGqlRequestBuilder(
-                "a7c600111acc4d1b294eafa364600556227939e2ff88505faa73035b57a83b22",
+                "ee645fed322a59291288b848838f8c307451462ae10e78c66e8e8a11297447f4",
                 "SearchResultsPage_SearchResults"
         )
                 .withVariable("requestID", requestId)
