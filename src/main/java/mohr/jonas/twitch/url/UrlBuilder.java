@@ -1,9 +1,5 @@
 package mohr.jonas.twitch.url;
 
-import mohr.jonas.twitch.Assertions;
-import mohr.jonas.twitch.StringUtils;
-import mohr.jonas.twitch.data.Tuple;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -11,6 +7,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.Assertions;
+import mohr.jonas.twitch.StringUtils;
+import mohr.jonas.twitch.data.Tuple;
 
 public class UrlBuilder {
 
@@ -52,13 +52,21 @@ public class UrlBuilder {
     }
 
     public String build() {
-        Assertions.assertThat(() -> !StringUtils.isAllBlank(schema));
-        Assertions.assertThat(() -> !StringUtils.isAllBlank(host));
+        Assertions.assertThat(
+                () -> !StringUtils.isAllBlank(schema),
+                "Schema is fully blank"
+        );
+        Assertions.assertThat(
+                () -> !StringUtils.isAllBlank(host),
+                "Host is fully blank"
+        );
 
         final var pathStringBuilder = new StringBuilder();
 
         for (final var pathSegment : path) {
-            Assertions.assertThat(() -> pathSegmentRegex.matcher(pathSegment).matches());
+            Assertions.assertThat(() -> pathSegmentRegex.matcher(pathSegment).matches(),
+                    String.format("Path segment '%s' does not match pattern '%s'", pathSegment,
+                            pathSegmentRegex.pattern()));
             pathStringBuilder.append("/").append(pathSegment);
         }
 
@@ -66,14 +74,11 @@ public class UrlBuilder {
 
         for (int i = 0; i < queries.size(); i++) {
             var queryTuple = queries.get(i);
-            var urlEncodedQueryKey = URLEncoder.encode(queryTuple.left(),
-                    StandardCharsets.UTF_8);
+            var urlEncodedQueryKey = URLEncoder.encode(queryTuple.left(), StandardCharsets.UTF_8);
             var urlEncodedQueryValue = URLEncoder.encode(queryTuple.right(),
                     StandardCharsets.UTF_8);
-            if (i == 0)
-                queryStringBuilder.append("?");
-            else
-                queryStringBuilder.append("&");
+            if (i == 0) queryStringBuilder.append("?");
+            else queryStringBuilder.append("&");
             queryStringBuilder.append(urlEncodedQueryKey).append("=").append(urlEncodedQueryValue);
         }
 

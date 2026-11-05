@@ -4,11 +4,12 @@ import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.SearchQueryHandlerFactory;
 import org.schabi.newpipe.extractor.search.filter.Filter;
 import org.schabi.newpipe.extractor.search.filter.FilterItem;
-import mohr.jonas.twitch.TwitchSearchFilters;
-import mohr.jonas.twitch.TwitchUrlBuilder;
 
 import java.util.List;
 import java.util.Objects;
+
+import mohr.jonas.twitch.TwitchSearchFilters;
+import mohr.jonas.twitch.TwitchUrlBuilder;
 
 public final class TwitchSearchQueryHandlerFactory extends SearchQueryHandlerFactory {
 

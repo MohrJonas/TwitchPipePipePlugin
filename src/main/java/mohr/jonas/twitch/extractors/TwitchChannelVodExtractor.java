@@ -8,9 +8,19 @@ import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.extractor.channel.ChannelTabExtractor;
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
-import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
 import org.schabi.newpipe.extractor.localization.DateWrapper;
+import org.schabi.newpipe.extractor.stream.StreamInfoItem;
+import org.schabi.newpipe.extractor.stream.StreamType;
+
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import mohr.jonas.twitch.Assertions;
 import mohr.jonas.twitch.TwitchDurationExtractor;
 import mohr.jonas.twitch.TwitchUrlBuilder;
@@ -22,16 +32,6 @@ import mohr.jonas.twitch.data.api.pagination.Pagination;
 import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
 import mohr.jonas.twitch.data.api.responses.vod.TwitchHelixVodResponse;
 import mohr.jonas.twitch.data.api.responses.vod.TwitchVodResponseInner;
-import org.schabi.newpipe.extractor.stream.StreamInfoItem;
-import org.schabi.newpipe.extractor.stream.StreamType;
-
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nonnull;
 
 public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
     @Nonnull
@@ -66,7 +66,7 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
         }
 
         if (pagination instanceof CursorBasedPagination) {
-            if(helixResponse.hasMoreEntries())
+            if (helixResponse.hasMoreEntries())
                 nextPage = new Page(TwitchUrlBuilder.buildChannelTabUrl(
                         channelName,
                         channelId,
@@ -75,7 +75,7 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
                 ));
         }
 
-        if(apiClient.getApiSettings().shouldUseHelixForVods()) {
+        if (apiClient.getApiSettings().shouldUseHelixForVods()) {
             return new InfoItemsPage<>(Arrays.stream(helixResponse.entries()).map(res -> {
                         final var item = new StreamInfoItem(
                                 getServiceId(),
@@ -120,20 +120,24 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
         return getInitialPage();
     }
 
-    private void fetchData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException, ExtractionException {
+    private void fetchData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException,
+            ExtractionException {
         try {
             final var channelUrl = TwitchUrlParser.parseChannelUrl(url);
-            Assertions.assertThat(() -> channelUrl.tabType() == TwitchChannelTabLinkType.VIDEOS);
+            Assertions.assertThat(
+                    () -> channelUrl.tabType() == TwitchChannelTabLinkType.VIDEOS,
+                    String.format("Channel type '%s' is not expected type '%s'",
+                            channelUrl.tabType(), TwitchChannelTabLinkType.VIDEOS)
+            );
             channelName = channelUrl.channelLoginName();
             channelId = channelUrl.channelId();
             pagination = channelUrl.pagination();
-            if(apiClient.getApiSettings().shouldUseHelixForVods()) {
+            if (apiClient.getApiSettings().shouldUseHelixForVods()) {
                 helixResponse = apiClient.getAuthorized().getVods(
                         downloader,
                         channelId,
                         ((CursorBasedPagination) pagination).cursor());
-            }
-            else {
+            } else {
                 gqlResponse = apiClient.getUnauthorized().getTwitchVods(
                         downloader,
                         channelName,

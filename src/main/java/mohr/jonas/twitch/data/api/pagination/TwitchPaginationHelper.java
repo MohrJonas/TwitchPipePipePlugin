@@ -3,15 +3,15 @@ package mohr.jonas.twitch.data.api.pagination;
 import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonWriter;
 
-import mohr.jonas.twitch.TwitchUtils;
-import mohr.jonas.twitch.api.TwitchJsonHelper;
-
 import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.TwitchUtils;
+import mohr.jonas.twitch.api.TwitchJsonHelper;
 
 public final class TwitchPaginationHelper {
     public static @Nonnull String createPaginationString(final @Nonnull Pagination pagination) {
@@ -51,7 +51,8 @@ public final class TwitchPaginationHelper {
     public static <T> T[] paginateArray(@Nonnull final T[] toPaginate,
                                         @Nonnull final Class<T> clazz,
                                         @Nonnull final PositionBasedPagination pagination) {
-        final var targetArraySize = Math.clamp(toPaginate.length - pagination.offset(), 0, pagination.size());
+        final var targetArraySize = Math.clamp(toPaginate.length - pagination.offset(), 0,
+                pagination.size());
         if (targetArraySize == 0)
             //noinspection unchecked
             return (T[]) Array.newInstance(clazz, 0);

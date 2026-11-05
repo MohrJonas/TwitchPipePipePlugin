@@ -2,6 +2,7 @@ package mohr.jonas.twitch.linkHandlers;
 
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.LinkHandlerFactory;
+
 import mohr.jonas.twitch.TwitchUrlParser;
 import mohr.jonas.twitch.data.TwitchStreamLinkType;
 

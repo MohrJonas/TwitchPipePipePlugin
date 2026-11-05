@@ -2,9 +2,9 @@ package mohr.jonas.twitch.data.api;
 
 import com.grack.nanojson.JsonObject;
 
-import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
-
 import java.lang.reflect.InvocationTargetException;
+
+import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
 
 public final class TwitchResponseParser {
     public static <T extends TwitchBaseResponse<?>> T parseFromJson(JsonObject object,

@@ -1,7 +1,5 @@
 package mohr.jonas.twitch.api;
 
-import mohr.jonas.twitch.data.api.TwitchIntegrityToken;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +9,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.data.api.TwitchIntegrityToken;
 
 public final class TwitchApiHelper {
 

@@ -10,14 +10,6 @@ import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
 import org.schabi.newpipe.extractor.linkhandler.LinkHandler;
-import mohr.jonas.twitch.TwitchUrlBuilder;
-import mohr.jonas.twitch.TwitchUrlParser;
-import mohr.jonas.twitch.api.TwitchApiClient;
-import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
-import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
-import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
-import mohr.jonas.twitch.data.api.responses.clip.TwitchClipPlaybackResponseInner;
-import mohr.jonas.twitch.data.api.responses.clip.TwitchVideoPlayerMediaSessionManagerResponseInner;
 import org.schabi.newpipe.extractor.stream.AudioStream;
 import org.schabi.newpipe.extractor.stream.DeliveryMethod;
 import org.schabi.newpipe.extractor.stream.StreamExtractor;
@@ -31,6 +23,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.TwitchUrlBuilder;
+import mohr.jonas.twitch.TwitchUrlParser;
+import mohr.jonas.twitch.api.TwitchApiClient;
+import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
+import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
+import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
+import mohr.jonas.twitch.data.api.responses.clip.TwitchClipPlaybackResponseInner;
+import mohr.jonas.twitch.data.api.responses.clip.TwitchVideoPlayerMediaSessionManagerResponseInner;
 
 public final class TwitchClipExtractor extends StreamExtractor {
 
@@ -49,7 +50,8 @@ public final class TwitchClipExtractor extends StreamExtractor {
     @NotNull
     @Override
     public String getThumbnailUrl() throws ParsingException {
-        // The thumbnail URL is not available here. To get it we would need another expensive API call.
+        // The thumbnail URL is not available here. To get it we would need another expensive API
+        // call.
         // I don't really see the benefit here to get the thumbnail
         return TwitchThumbnailURLGenerator.NO_THUMBNAIL_URL;
     }

@@ -15,18 +15,6 @@ import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
 import org.schabi.newpipe.extractor.localization.DateWrapper;
 import org.schabi.newpipe.extractor.search.filter.Filter;
 import org.schabi.newpipe.extractor.search.filter.FilterItem;
-import mohr.jonas.twitch.TwitchDurationExtractor;
-import mohr.jonas.twitch.TwitchUrlBuilder;
-import mohr.jonas.twitch.TwitchUrlParser;
-import mohr.jonas.twitch.api.TwitchApiClient;
-import mohr.jonas.twitch.data.TwitchChannelTabLinkType;
-import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
-import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
-import mohr.jonas.twitch.data.api.pagination.TwitchPaginationHelper;
-import mohr.jonas.twitch.data.api.responses.channel.TwitchChannelResponseInner;
-import mohr.jonas.twitch.data.api.responses.vod.TwitchHelixVodResponse;
-import mohr.jonas.twitch.data.api.responses.vod.TwitchVodResponseInner;
-import mohr.jonas.twitch.data.url.ChannelUrl;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamInfoItemExtractor;
 import org.schabi.newpipe.extractor.stream.StreamInfoItemsCollector;
@@ -39,6 +27,19 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.TwitchDurationExtractor;
+import mohr.jonas.twitch.TwitchUrlBuilder;
+import mohr.jonas.twitch.TwitchUrlParser;
+import mohr.jonas.twitch.api.TwitchApiClient;
+import mohr.jonas.twitch.data.TwitchChannelTabLinkType;
+import mohr.jonas.twitch.data.api.pagination.CursorBasedPagination;
+import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
+import mohr.jonas.twitch.data.api.pagination.TwitchPaginationHelper;
+import mohr.jonas.twitch.data.api.responses.channel.TwitchChannelResponseInner;
+import mohr.jonas.twitch.data.api.responses.vod.TwitchHelixVodResponse;
+import mohr.jonas.twitch.data.api.responses.vod.TwitchVodResponseInner;
+import mohr.jonas.twitch.data.url.ChannelUrl;
 
 public class TwitchChannelExtractor extends ChannelExtractor {
 
@@ -85,8 +86,8 @@ public class TwitchChannelExtractor extends ChannelExtractor {
         }
 
         final var collector = new StreamInfoItemsCollector(getServiceId());
-        if(apiClient.getApiSettings().shouldUseHelixForVods()) {
-            for(final var vod : helixResponse.entries()) {
+        if (apiClient.getApiSettings().shouldUseHelixForVods()) {
+            for (final var vod : helixResponse.entries()) {
                 collector.commit(new StreamInfoItemExtractor() {
                     @Override
                     public StreamType getStreamType() throws ParsingException {
@@ -136,8 +137,7 @@ public class TwitchChannelExtractor extends ChannelExtractor {
                     }
                 });
             }
-        }
-        else {
+        } else {
             for (final var vod : gqlResponse) {
                 collector.commit(new StreamInfoItemExtractor() {
                     @Override
@@ -283,7 +283,8 @@ public class TwitchChannelExtractor extends ChannelExtractor {
         return list;
     }
 
-    private void fetchData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException, ExtractionException {
+    private void fetchData(@Nonnull final Downloader downloader, @Nonnull final String url) throws IOException,
+            ExtractionException {
         try {
             channelUrl = TwitchUrlParser.parseChannelUrl(url);
             channelResponse = apiClient.getUnauthorized().getTwitchChannel(downloader,

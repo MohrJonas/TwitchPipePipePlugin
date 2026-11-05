@@ -5,14 +5,15 @@ import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonWriter;
 
 import org.jetbrains.annotations.Nullable;
-import mohr.jonas.twitch.TwitchUtils;
-import mohr.jonas.twitch.data.api.requests.TwitchGqlRequestBuilder;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.TwitchUtils;
+import mohr.jonas.twitch.data.api.requests.TwitchGqlRequestBuilder;
 
 public final class TwitchGQLTemplates {
     private static final String STREAM_PLAYBACK_ACCESS_TOKEN_TEMPLATE = "{\"query\": \"{\\n" +
@@ -144,7 +145,7 @@ public final class TwitchGQLTemplates {
             }
         }
         return JsonWriter.string(new TwitchGqlRequestBuilder(
-                "a7c600111acc4d1b294eafa364600556227939e2ff88505faa73035b57a83b22",
+                "ee645fed322a59291288b848838f8c307451462ae10e78c66e8e8a11297447f4",
                 "SearchResultsPage_SearchResults"
         )
                 .withVariable("requestID", requestId)

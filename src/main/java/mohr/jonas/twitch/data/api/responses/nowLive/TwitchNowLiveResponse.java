@@ -3,14 +3,15 @@ package mohr.jonas.twitch.data.api.responses.nowLive;
 import com.grack.nanojson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
-import mohr.jonas.twitch.data.api.TwitchExtensionsData;
-import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
 
 import java.util.Comparator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
+import mohr.jonas.twitch.data.api.TwitchExtensionsData;
+import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
 
 public class TwitchNowLiveResponse extends TwitchBaseResponse<TwitchNowLiveResponseEntry[]> {
 

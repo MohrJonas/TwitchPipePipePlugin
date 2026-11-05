@@ -3,14 +3,15 @@ package mohr.jonas.twitch.data.api.responses.clip;
 import com.grack.nanojson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
-import mohr.jonas.twitch.data.api.TwitchExtensionsData;
-import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
 
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import mohr.jonas.twitch.data.api.TwitchExtensionsData;
+import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
 
 public final class TwitchClipPlaybackResponse extends TwitchBaseResponse<TwitchClipPlaybackResponseInner[]> {
 

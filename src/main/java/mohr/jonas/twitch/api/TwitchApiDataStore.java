@@ -1,8 +1,8 @@
 package mohr.jonas.twitch.api;
 
-import mohr.jonas.twitch.data.api.TwitchIntegrityToken;
-
 import javax.annotation.Nullable;
+
+import mohr.jonas.twitch.data.api.TwitchIntegrityToken;
 
 public final class TwitchApiDataStore {
     public @Nullable TwitchIntegrityToken integrityToken = null;

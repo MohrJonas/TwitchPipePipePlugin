@@ -9,12 +9,6 @@ import org.schabi.newpipe.extractor.channel.ChannelTabExtractor;
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
-import mohr.jonas.twitch.TwitchUrlBuilder;
-import mohr.jonas.twitch.TwitchUrlParser;
-import mohr.jonas.twitch.api.TwitchApiClient;
-import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
-import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
-import mohr.jonas.twitch.data.api.responses.stream.TwitchStreamResponseInner;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamType;
 
@@ -23,6 +17,13 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import mohr.jonas.twitch.TwitchUrlBuilder;
+import mohr.jonas.twitch.TwitchUrlParser;
+import mohr.jonas.twitch.api.TwitchApiClient;
+import mohr.jonas.twitch.api.TwitchThumbnailURLGenerator;
+import mohr.jonas.twitch.data.api.pagination.PositionBasedPagination;
+import mohr.jonas.twitch.data.api.responses.stream.TwitchStreamResponseInner;
 
 public final class TwitchChannelStreamExtractor extends ChannelTabExtractor {
 

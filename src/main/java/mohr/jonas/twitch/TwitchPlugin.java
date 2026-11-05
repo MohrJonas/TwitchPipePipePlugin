@@ -6,7 +6,9 @@ import org.schabi.newpipe.extractor.plugin.PluginContext;
 
 import javax.annotation.Nonnull;
 
-/** Entry point, referenced by {@code entryClass} in plugin.json. */
+/**
+ * Entry point, referenced by {@code entryClass} in plugin.json.
+ */
 @SuppressWarnings("unused")
 public final class TwitchPlugin implements PipePipePlugin {
     @Nonnull

@@ -7,7 +7,18 @@ import org.jetbrains.annotations.Nullable;
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
-import mohr.jonas.twitch.TwitchService;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
+
 import mohr.jonas.twitch.TwitchUtils;
 import mohr.jonas.twitch.data.Resolution;
 import mohr.jonas.twitch.data.TwitchVideoStream;
@@ -27,17 +38,6 @@ import mohr.jonas.twitch.data.api.responses.search.TwitchSearchResponse;
 import mohr.jonas.twitch.data.api.responses.stream.TwitchStreamResponse;
 import mohr.jonas.twitch.data.api.responses.vod.TwitchVodResponse;
 import mohr.jonas.twitch.graphql.TwitchGQLTemplates;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.regex.Pattern;
-
-import javax.annotation.Nonnull;
 
 public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
 
@@ -73,7 +73,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
                                                                @Nonnull final Function<String,
                                                                        String> bodyGenerator,
                                                                @Nonnull final Function<Response,
-                                                                       T> mapper) throws IOException, ReCaptchaException, JsonParserException {
+                                                                       T> mapper) throws IOException,
+            ReCaptchaException, JsonParserException {
 
         if (apiDataStore.sessionId == null)
             prepareDataStore(apiDataStore);
@@ -128,7 +129,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
 
     public @Nonnull TwitchSearchResponse getSearchResponse(@Nonnull final Downloader downloader,
                                                            @Nonnull final String query,
-                                                           @Nullable final String[] contentTypes) throws IOException, ReCaptchaException, JsonParserException {
+                                                           @Nullable final String[] contentTypes) throws IOException,
+            ReCaptchaException, JsonParserException {
         return performRequest(
                 downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
@@ -137,7 +139,9 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchNowLiveResponse getNowLiveInformation(final @Nonnull Downloader downloader, final int count) throws IOException, ReCaptchaException, JsonParserException {
+    public @Nonnull TwitchNowLiveResponse getNowLiveInformation(final @Nonnull Downloader downloader,
+                                                                final int count) throws IOException,
+            ReCaptchaException, JsonParserException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getNowLive(count),
@@ -145,7 +149,9 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchStreamResponse getStreamInformation(final @Nonnull Downloader downloader, final @Nonnull String channelName) throws IOException, ReCaptchaException, JsonParserException {
+    public @Nonnull TwitchStreamResponse getStreamInformation(final @Nonnull Downloader downloader,
+                                                              final @Nonnull String channelName) throws IOException,
+            ReCaptchaException, JsonParserException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getStream(channelName),
@@ -153,7 +159,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchStreamPlaybackTokenResponse getPlaybackToken(final @Nonnull Downloader downloader, final @Nonnull String channelName) throws IOException, ReCaptchaException, JsonParserException {
+    public @Nonnull TwitchStreamPlaybackTokenResponse getPlaybackToken(final @Nonnull Downloader downloader,
+                                                                       final @Nonnull String channelName) throws IOException, ReCaptchaException, JsonParserException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getPlaybackAccessTokenTemplate(channelName),
@@ -163,7 +170,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
 
     public @Nonnull TwitchVideoStream[] getM3U8PlaybackUrl(final @Nonnull Downloader downloader,
                                                            final @Nonnull String channelName,
-                                                           final @Nonnull String playbackTokenSignature, final @Nonnull String playbackTokenValue) throws IOException, ReCaptchaException, JsonParserException {
+                                                           final @Nonnull String playbackTokenSignature,
+                                                           final @Nonnull String playbackTokenValue) throws IOException, ReCaptchaException, JsonParserException {
         final var masterM3U8Url =
                 TwitchApiConstants.TWITCH_USHER_URL + "/api/v2/channel/hls/" + channelName +
                         ".m3u8?allow_source=true&allow_audio_only=false&allow_spectre=true&p" +
@@ -206,7 +214,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
     }
 
     public @Nonnull TwitchChannelResponse getTwitchChannel(final @Nonnull Downloader downloader,
-                                                           final @Nonnull String channelName) throws IOException, ReCaptchaException, JsonParserException {
+                                                           final @Nonnull String channelName) throws IOException,
+            ReCaptchaException, JsonParserException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getChannel(channelName),
@@ -237,7 +246,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchClipPlaybackResponse getClipPlaybackToken(final @Nonnull Downloader downloader, final @Nonnull String clipSlug) throws IOException, ReCaptchaException, JsonParserException {
+    public @Nonnull TwitchClipPlaybackResponse getClipPlaybackToken(final @Nonnull Downloader downloader,
+                                                                    final @Nonnull String clipSlug) throws IOException, ReCaptchaException, JsonParserException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getClipPlayback(clipSlug),
@@ -245,7 +255,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchVodPlaybackTokenResponse getVodPlaybackToken(final @Nonnull Downloader downloader, final @Nonnull String vodId) throws IOException, ReCaptchaException, JsonParserException {
+    public @Nonnull TwitchVodPlaybackTokenResponse getVodPlaybackToken(final @Nonnull Downloader downloader,
+                                                                       final @Nonnull String vodId) throws IOException, ReCaptchaException, JsonParserException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getVodPlaybackTokenTemplate(vodId),
@@ -253,7 +264,10 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchVideoStream[] getM3U8VodPlaybackUrl(final @Nonnull Downloader downloader, final @Nonnull String vodId, final @Nonnull String playbackTokenSignature, final @Nonnull String playbackTokenValue) throws IOException, ReCaptchaException, JsonParserException {
+    public @Nonnull TwitchVideoStream[] getM3U8VodPlaybackUrl(final @Nonnull Downloader downloader,
+                                                              final @Nonnull String vodId,
+                                                              final @Nonnull String playbackTokenSignature,
+                                                              final @Nonnull String playbackTokenValue) throws IOException, ReCaptchaException, JsonParserException {
         return performRawRequest(downloader, HttpRequestType.GET,
                 sessionId -> TwitchApiConstants.TWITCH_USHER_URL + "/vod/v2/" + vodId + ".m3u8" +
                         "?acmb" +
@@ -308,7 +322,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchSideNavResponse getTwitchSideNavResponse(final @Nonnull Downloader downloader, final @Nonnull String channelName) throws IOException, ReCaptchaException, JsonParserException {
+    public @Nonnull TwitchSideNavResponse getTwitchSideNavResponse(final @Nonnull Downloader downloader,
+                                                                   final @Nonnull String channelName) throws IOException, ReCaptchaException, JsonParserException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getSideNavTemplate(channelName),
@@ -316,7 +331,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         );
     }
 
-    public @Nonnull TwitchDirectoryResponse getTwitchCategory(@Nonnull final Downloader downloader, @Nonnull final String categorySlug, final int count) throws JsonParserException, IOException, ReCaptchaException {
+    public @Nonnull TwitchDirectoryResponse getTwitchCategory(@Nonnull final Downloader downloader,
+                                                              @Nonnull final String categorySlug, final int count) throws JsonParserException, IOException, ReCaptchaException {
         return performRequest(downloader, false, HttpRequestType.POST,
                 _ -> TwitchApiConstants.TWITCH_GQL_URL,
                 _ -> TwitchGQLTemplates.getDirectoryTemplate(categorySlug, count),

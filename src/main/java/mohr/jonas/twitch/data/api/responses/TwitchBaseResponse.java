@@ -2,12 +2,12 @@ package mohr.jonas.twitch.data.api.responses;
 
 import com.grack.nanojson.JsonObject;
 
-import mohr.jonas.twitch.data.api.TwitchExtensionsData;
-
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import mohr.jonas.twitch.data.api.TwitchExtensionsData;
 
 public abstract class TwitchBaseResponse<T> {
 
