@@ -41,6 +41,8 @@ import mohr.jonas.twitch.graphql.TwitchGQLTemplates;
 
 public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
 
+    private static final String serviceErrorMessage = "service error";
+
     @Nonnull
     private final TwitchApiDataStore apiDataStore = new TwitchApiDataStore();
 
@@ -68,20 +70,19 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
     private <T extends TwitchBaseResponse<?>> T performRequest(@Nonnull final Downloader downloader,
                                                                final boolean requiresAuthentication,
                                                                final HttpRequestType requestType,
-                                                               @Nonnull final Function<String,
-                                                                       String> urlGenerator,
-                                                               @Nonnull final Function<String,
-                                                                       String> bodyGenerator,
-                                                               @Nonnull final Function<Response,
-                                                                       T> mapper) throws IOException,
+                                                               @Nonnull final Function<String, String> urlGenerator,
+                                                               @Nonnull final Function<String, String> bodyGenerator,
+                                                               @Nonnull final Function<Response, T> mapper) throws IOException,
             ReCaptchaException, JsonParserException {
 
         if (apiDataStore.sessionId == null)
             prepareDataStore(apiDataStore);
 
-        // FIXME
         if (apiDataStore.deviceId == null)
-            //fetchDeviceId(downloader);
+            fetchDeviceId(downloader);
+
+        // If still null, fall back to generic random id
+        if(apiDataStore.deviceId == null)
             apiDataStore.deviceId = TwitchApiHelper.generateRandomRequestId().toLowerCase();
 
         if (requiresAuthentication &&
@@ -89,29 +90,35 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
             refreshIntegrityToken(downloader);
         }
 
-        final var mapperResult = performRawRequest(
-                downloader,
-                requestType,
-                urlGenerator,
-                bodyGenerator,
-                requestId -> requiresAuthentication
-                        ? TwitchApiHelper.generateAuthenticatedRequestHeaders(apiDataStore,
-                        requestId)
-                        : TwitchApiHelper.generateUnauthenticatedRequestHeaders(apiDataStore),
-                mapper
-        );
+        for(var i = 0; i < 3; i++) {
+            final var mapperResult = performRawRequest(
+                    downloader,
+                    requestType,
+                    urlGenerator,
+                    bodyGenerator,
+                    requestId -> requiresAuthentication
+                            ? TwitchApiHelper.generateAuthenticatedRequestHeaders(apiDataStore, requestId)
+                            : TwitchApiHelper.generateUnauthenticatedRequestHeaders(apiDataStore),
+                    mapper
+            );
 
-        if (mapperResult.getErrors() != null && mapperResult.getErrors().length > 0)
+            if(mapperResult.getErrors() == null || mapperResult.getErrors().length == 0)
+                return mapperResult;
+
+            if(mapperResult.getErrors().length == 1 && mapperResult.getErrors()[0].equals(serviceErrorMessage))
+                continue;
+
             throw new TwitchApiResponseException(mapperResult.getErrors());
-
-        return mapperResult;
+        }
+        throw new TwitchApiResponseException(new String[]{ "Max retries exceeded" });
     }
 
     private void fetchDeviceId(@Nonnull final Downloader downloader) throws IOException,
             ReCaptchaException {
         final var response = downloader.get("https://twitch.tv");
         if (!TwitchUtils.isSuccessfulResponseCode(response.responseCode()))
-            throw new IOException(response.responseBody());
+            return;
+//            throw new IOException(response.responseBody());
 
         final var headers = response.responseHeaders().get("set-cookie");
 
@@ -122,7 +129,8 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
                 .findAny();
 
         if (targetCookie.isEmpty())
-            throw new IOException("Unable to get cookie \"unique_id_durable\"");
+            return;
+//            throw new IOException("Unable to get cookie \"unique_id_durable\"");
 
         apiDataStore.deviceId = targetCookie.get().value();
     }

@@ -84,7 +84,7 @@ public class TwitchVodExtractor extends StreamExtractor {
     @Override
     public String getUploaderUrl() throws ParsingException {
         return TwitchUrlBuilder.buildChannelUrlFromChannelNameAndPagination(
-                getUploaderName(),
+                twitchVideoPlayerMediaSessionManager.ownerLoginName(),
                 twitchVideoPlayerMediaSessionManager.ownerId(),
                 apiClient.getApiSettings().shouldUseHelixForVods()
                         ? CursorBasedPagination.DEFAULT_CURSOR_PAGINATION
