@@ -1,7 +1,6 @@
-name: CI
+name: Publish a new version of the plugin
 
 on:
-  pull_request:
   push:
     branches: [main]
 
@@ -15,29 +14,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '2'
-      - name: Validate bump of versionCode and versionName
-        shell: bash
-        run: |
-          set -eu -o pipefail
-
-          commitMsg=$(git log --format=%B -n 1)
-          echo "Commit message is: \"$commitMsg\""
-
-          if [[ "${commitMsg:0:20}" == "[SKIP_VERSION_CHECK]" ]]; then
-            echo "Skipping version check"
-            exit 0
-          fi
-
-          echo "Validating version bump"
-
-          currentVersionCode=$(jq -j '.versionCode' 'src/main/resources/plugin.json')
-          currentVersionName=$(jq -j '.versionName' 'src/main/resources/plugin.json')
-
-          lastVersionCode=$(git show HEAD~1:src/main/resources/plugin.json | jq -j '.versionCode')
-          lastVersionName=$(git show HEAD~1:src/main/resources/plugin.json | jq -j '.versionName')
-
-          test "$currentVersionCode" != "$lastVersionCode" && test "$currentVersionName" != "$lastVersionName"
-
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
