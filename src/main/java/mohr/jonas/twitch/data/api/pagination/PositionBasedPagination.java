@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public final class PositionBasedPagination extends Pagination {
 
-    public static final PositionBasedPagination DEFAULT_POSITION_PAGINATION =
-            new PositionBasedPagination(0, 20);
+    public static final PositionBasedPagination DEFAULT_POSITION_PAGINATION
+            = new PositionBasedPagination(0, 20);
 
     private final int offset;
     private final int size;
@@ -32,7 +32,7 @@ public final class PositionBasedPagination extends Pagination {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (PositionBasedPagination) obj;
+        final var that = (PositionBasedPagination) obj;
         return this.offset == that.offset &&
                 this.size == that.size;
     }

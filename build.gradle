@@ -11,6 +11,7 @@
 
 plugins {
     id 'java-library'
+    id 'checkstyle'
 }
 
 def localProps = new Properties()
@@ -30,6 +31,10 @@ allprojects {
 
 subprojects {
     apply plugin: 'java-library'
+}
+
+checkstyle {
+    toolVersion = '14.4.0'
 }
 
 allprojects {

@@ -39,7 +39,7 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
     private TwitchVodResponseInner[] gqlResponse;
     private TwitchHelixVodResponse helixResponse;
     private Pagination pagination;
-    private String channelName;
+    private String channelLoginName;
     private String channelId;
 
     public TwitchChannelVodExtractor(final @Nonnull StreamingService service,
@@ -58,7 +58,7 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
             if (positionBasedPagination.offset() + positionBasedPagination.size() < 100
                     && gqlResponse.length != 0)
                 nextPage = new Page(TwitchUrlBuilder.buildChannelTabUrl(
-                        channelName,
+                        channelLoginName,
                         channelId,
                         TwitchChannelTabLinkType.CLIPS,
                         positionBasedPagination.shift(100)
@@ -68,7 +68,7 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
         if (pagination instanceof CursorBasedPagination) {
             if (helixResponse.hasMoreEntries())
                 nextPage = new Page(TwitchUrlBuilder.buildChannelTabUrl(
-                        channelName,
+                        channelLoginName,
                         channelId,
                         TwitchChannelTabLinkType.CLIPS,
                         new CursorBasedPagination(helixResponse.cursor())
@@ -129,7 +129,7 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
                     String.format("Channel type '%s' is not expected type '%s'",
                             channelUrl.tabType(), TwitchChannelTabLinkType.VIDEOS)
             );
-            channelName = channelUrl.channelLoginName();
+            channelLoginName = channelUrl.channelLoginName();
             channelId = channelUrl.channelId();
             pagination = channelUrl.pagination();
             if (apiClient.getApiSettings().shouldUseHelixForVods()) {
@@ -140,7 +140,7 @@ public final class TwitchChannelVodExtractor extends ChannelTabExtractor {
             } else {
                 gqlResponse = apiClient.getUnauthorized().getTwitchVods(
                         downloader,
-                        channelName,
+                        channelLoginName,
                         ((PositionBasedPagination) pagination).offset() + ((PositionBasedPagination) pagination).size()).getData();
             }
         } catch (JsonParserException e) {

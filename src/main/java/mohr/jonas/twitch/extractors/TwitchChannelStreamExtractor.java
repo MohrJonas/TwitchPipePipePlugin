@@ -47,7 +47,7 @@ public final class TwitchChannelStreamExtractor extends ChannelTabExtractor {
         var item = new StreamInfoItem(
                 getServiceId(),
                 TwitchUrlBuilder.buildStreamUrlFromChannelName(
-                        response.streamerName(),
+                        response.streamerLoginName(),
                         channelId,
                         PositionBasedPagination.DEFAULT_POSITION_PAGINATION
                 ),

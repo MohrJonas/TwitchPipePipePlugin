@@ -40,7 +40,7 @@ public final class TwitchChannelClipExtractor extends ChannelTabExtractor {
     private TwitchClipResponseInner[] gqlResponse;
     private TwitchHelixClipResponseInner helixResponse;
     private Pagination pagination;
-    private String channelName;
+    private String channelLoginName;
     private String channelId;
 
     public TwitchChannelClipExtractor(final @Nonnull StreamingService service,
@@ -59,7 +59,7 @@ public final class TwitchChannelClipExtractor extends ChannelTabExtractor {
             if (positionBasedPagination.offset() + positionBasedPagination.size() < 100
                     && gqlResponse.length != 0)
                 nextPage = new Page(TwitchUrlBuilder.buildChannelTabUrl(
-                        channelName,
+                        channelLoginName,
                         channelId,
                         TwitchChannelTabLinkType.CLIPS,
                         positionBasedPagination.shift(100)
@@ -69,7 +69,7 @@ public final class TwitchChannelClipExtractor extends ChannelTabExtractor {
         if (pagination instanceof CursorBasedPagination) {
             if (helixResponse.hasMoreEntries())
                 nextPage = new Page(TwitchUrlBuilder.buildChannelTabUrl(
-                        channelName,
+                        channelLoginName,
                         channelId,
                         TwitchChannelTabLinkType.CLIPS,
                         new CursorBasedPagination(helixResponse.cursor())
@@ -125,7 +125,7 @@ public final class TwitchChannelClipExtractor extends ChannelTabExtractor {
                     String.format("Channel type '%s' is not expected type '%s'",
                             channelUrl.tabType(), TwitchChannelTabLinkType.VIDEOS)
             );
-            channelName = channelUrl.channelLoginName();
+            channelLoginName = channelUrl.channelLoginName();
             channelId = channelUrl.channelId();
             pagination = channelUrl.pagination();
             if (apiClient.getApiSettings().shouldUseHelixForClips()) {
@@ -138,7 +138,7 @@ public final class TwitchChannelClipExtractor extends ChannelTabExtractor {
                 gqlResponse = TwitchPaginationHelper.paginateArray(
                         apiClient.getUnauthorized().getTwitchClips(
                                 downloader,
-                                channelName,
+                                channelLoginName,
                                 ((PositionBasedPagination) pagination).offset() + ((PositionBasedPagination) pagination).size()
                         ).getData(), TwitchClipResponseInner.class,
                         (PositionBasedPagination) pagination

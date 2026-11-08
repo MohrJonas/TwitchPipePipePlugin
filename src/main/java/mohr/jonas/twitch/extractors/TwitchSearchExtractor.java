@@ -70,7 +70,7 @@ public class TwitchSearchExtractor extends SearchExtractor {
         final var item = new StreamInfoItem(
                 serviceId,
                 TwitchUrlBuilder.buildStreamUrlFromChannelName(
-                        entry.getChannelName(),
+                        entry.getLoginName(),
                         entry.getChannelId(),
                         apiClient.getApiSettings().shouldUseHelixForKiosk()
                                 ? CursorBasedPagination.DEFAULT_CURSOR_PAGINATION
@@ -92,7 +92,7 @@ public class TwitchSearchExtractor extends SearchExtractor {
         final var item = new ChannelInfoItem(
                 serviceId,
                 TwitchUrlBuilder.buildChannelUrlFromChannelNameAndPagination(
-                        entry.getChannelName(),
+                        entry.getLoginName(),
                         entry.getChannelId(),
                         apiClient.getApiSettings().shouldUseHelixForVods()
                                 ? CursorBasedPagination.DEFAULT_CURSOR_PAGINATION

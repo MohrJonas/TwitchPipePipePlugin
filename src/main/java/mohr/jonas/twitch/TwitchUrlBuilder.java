@@ -28,19 +28,19 @@ public final class TwitchUrlBuilder {
         return builder.build();
     }
 
-    public static @Nonnull String buildChannelUrlFromChannelNameAndPagination(@Nonnull final String channelName,
+    public static @Nonnull String buildChannelUrlFromChannelNameAndPagination(@Nonnull final String channelLoginName,
                                                                               @Nonnull final String channelId,
                                                                               @Nonnull final Pagination pagination) {
         return buildChannelTabUrl(
-                channelName, channelId, TwitchChannelTabLinkType.FRONT, pagination
+                channelLoginName, channelId, TwitchChannelTabLinkType.FRONT, pagination
         );
     }
 
-    public static @Nonnull String buildStreamUrlFromChannelName(@Nonnull final String channelName,
+    public static @Nonnull String buildStreamUrlFromChannelName(@Nonnull final String channelLoginName,
                                                                 @Nonnull final String channelId,
                                                                 @Nonnull final Pagination pagination) {
         return buildChannelTabUrl(
-                channelName, channelId, TwitchChannelTabLinkType.LIVE, pagination
+                channelLoginName, channelId, TwitchChannelTabLinkType.LIVE, pagination
         );
     }
 
@@ -74,7 +74,7 @@ public final class TwitchUrlBuilder {
                 .build();
     }
 
-    public static @Nonnull String buildChannelTabUrl(@Nonnull final String channelName,
+    public static @Nonnull String buildChannelTabUrl(@Nonnull final String channelLoginName,
                                                      @Nonnull final String channelId,
                                                      @Nonnull final TwitchChannelTabLinkType type,
                                                      @Nonnull final Pagination pagination) {
@@ -83,7 +83,7 @@ public final class TwitchUrlBuilder {
                 .withHost(TWITCH_HOST)
                 .withQuery("_channelId", channelId)
                 .addQuery("_pagination", TwitchPaginationHelper.createPaginationString(pagination))
-                .withPathSegments(channelName);
+                .withPathSegments(channelLoginName);
 
         switch (type) {
             case CLIPS -> builder.addPathSegments("clips");
