@@ -4,14 +4,12 @@ import com.grack.nanojson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import mohr.jonas.twitch.data.api.TwitchExtensionsData;
 import mohr.jonas.twitch.data.api.responses.TwitchBaseResponse;
+import mohr.jonas.twitch.url.UrlEncoder;
 
 public final class TwitchClipPlaybackResponse extends TwitchBaseResponse<TwitchClipPlaybackResponseInner[]> {
 
@@ -33,8 +31,7 @@ public final class TwitchClipPlaybackResponse extends TwitchBaseResponse<TwitchC
             final var clipHeight = Integer.parseInt(obj.getString("quality"));
             final var clipWidth = Math.round(clipHeight * aspectRatio);
             return new TwitchClipPlaybackResponseInner(
-                    obj.getString("sourceURL") + "?token=" + URLEncoder.encode(value,
-                            Charset.defaultCharset()) + "&sig=" + signature,
+                    obj.getString("sourceURL") + "?token=" + UrlEncoder.encode(value) + "&sig=" + signature,
                     clipHeight,
                     clipWidth
             );

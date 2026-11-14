@@ -1,13 +1,12 @@
 package mohr.jonas.twitch.url;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
+import mohr.jonas.twitch.url.UrlEncoder;
 import mohr.jonas.twitch.Assertions;
 import mohr.jonas.twitch.StringUtils;
 import mohr.jonas.twitch.data.Tuple;
@@ -74,9 +73,8 @@ public class UrlBuilder {
 
         for (int i = 0; i < queries.size(); i++) {
             var queryTuple = queries.get(i);
-            var urlEncodedQueryKey = URLEncoder.encode(queryTuple.left(), StandardCharsets.UTF_8);
-            var urlEncodedQueryValue = URLEncoder.encode(queryTuple.right(),
-                    StandardCharsets.UTF_8);
+            var urlEncodedQueryKey = UrlEncoder.encode(queryTuple.left());
+            var urlEncodedQueryValue = UrlEncoder.encode(queryTuple.right());
             if (i == 0) queryStringBuilder.append("?");
             else queryStringBuilder.append("&");
             queryStringBuilder.append(urlEncodedQueryKey).append("=").append(urlEncodedQueryValue);
