@@ -9,8 +9,6 @@ import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +36,7 @@ import mohr.jonas.twitch.data.api.responses.search.TwitchSearchResponse;
 import mohr.jonas.twitch.data.api.responses.stream.TwitchStreamResponse;
 import mohr.jonas.twitch.data.api.responses.vod.TwitchVodResponse;
 import mohr.jonas.twitch.graphql.TwitchGQLTemplates;
+import mohr.jonas.twitch.url.UrlEncoder;
 
 public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
 
@@ -185,7 +184,7 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
                         ".m3u8?allow_source=true&allow_audio_only=false&allow_spectre=true&p" +
                         "=1003155&platform=web&player=twitchweb&supported_codecs=av1,h265," +
                         "h264&playlist_include_framerate=false&sig=" + playbackTokenSignature +
-                        "&token=" + URLEncoder.encode(playbackTokenValue, Charset.defaultCharset());
+                        "&token=" + UrlEncoder.encode(playbackTokenValue);
         return performRawRequest(downloader, HttpRequestType.GET,
                 _ -> masterM3U8Url,
                 _ -> null,
@@ -279,7 +278,7 @@ public final class UnauthorizedTwitchApiClient extends TwitchBaseApiClient {
         return performRawRequest(downloader, HttpRequestType.GET,
                 sessionId -> TwitchApiConstants.TWITCH_USHER_URL + "/vod/v2/" + vodId + ".m3u8" +
                         "?acmb" +
-                        "=eyJBcHBWZXJzaW9uIjoiMTFhYmE4MTYtZThlMi00M2MyLWJmOWUtNTNkMTNiM2EyYWEyIiwiQ2xpZW50QXBwIjoid2ViIn0%3D&allow_source=true&enable_score=true&include_unavailable=false&lang=en&multigroup_video=false&p=4876112&platform=web&player_backend=mediaplayer&play_session_id=" + sessionId + "&player_version=1.50.0-rc.4&playlist_include_framerate=true&reassignments_supported=true&sig=" + playbackTokenSignature + "&token=" + URLEncoder.encode(playbackTokenValue, Charset.defaultCharset()),
+                        "=eyJBcHBWZXJzaW9uIjoiMTFhYmE4MTYtZThlMi00M2MyLWJmOWUtNTNkMTNiM2EyYWEyIiwiQ2xpZW50QXBwIjoid2ViIn0%3D&allow_source=true&enable_score=true&include_unavailable=false&lang=en&multigroup_video=false&p=4876112&platform=web&player_backend=mediaplayer&play_session_id=" + sessionId + "&player_version=1.50.0-rc.4&playlist_include_framerate=true&reassignments_supported=true&sig=" + playbackTokenSignature + "&token=" + UrlEncoder.encode(playbackTokenValue),
                 _ -> null,
                 _ -> TwitchApiHelper.generateUnauthenticatedRequestHeaders(apiDataStore),
                 response -> {

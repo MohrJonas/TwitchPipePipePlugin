@@ -1,8 +1,8 @@
 {
   "pluginId": "mohr.jonas.twitch",
   "name": "Twitch",
-  "versionCode": 4,
-  "versionName": "1.2.0",
+  "versionCode": 5,
+  "versionName": "1.2.1",
   "apiVersion": "1.0",
   "author": "Jonas Mohr",
   "entryClass": "mohr.jonas.twitch.TwitchPlugin",
